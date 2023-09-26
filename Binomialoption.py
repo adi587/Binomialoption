@@ -37,7 +37,7 @@ class Binomialoption(Stockoption):
                    self.d)/(self.u-self.d)
         
         
-
+    #Sets up tree for underlying asset
     def underly_tree_initial(self):
         self.underly_tree=[np.array([float(self.S_0)])]
         for i in range(self.N):
@@ -52,7 +52,7 @@ class Binomialoption(Stockoption):
 
         return max(early,self.val_tree[i][j])
 
-            
+    #Creating the valuation tree of the options        
     def valuation_tree(self):
         self.underly_tree_initial()       
         self.val_tree=[self.underly_tree[i].copy() 
@@ -80,18 +80,21 @@ class Binomialoption(Stockoption):
     
     def greeks(self):
         self.valuation_tree()
+        #Copying underlying asset tree
         self.underly_greeks=[self.underly_tree[i].copy() 
-                           for i in range(len(self.underly_tree))]        
+                           for i in range(len(self.underly_tree))]   
+        #Copying underlying options valuation tree
         self.val_greeks=[self.val_tree[i].copy() 
                            for i in range(len(self.val_tree))] 
         
+        #Adding extra branches for delta,gamma calculation
         for i in reversed(range(self.N)):
             self.underly_greeks[i]=np.append(self.underly_greeks[i],
                                              self.S_0*self.u**(i+1)/self.d)
             self.underly_greeks[i]=np.insert(self.underly_greeks[i],0,
                                              self.S_0*self.d**(i+1)/self.u)
-            
-            
+
+
             if self.is_call: 
                 self.val_greeks[i]=np.append(self.val_greeks[i],
                                              max(self.underly_greeks[i][-1]-self.c,0))
@@ -163,3 +166,4 @@ class Binomialoption(Stockoption):
                 "Theta":self.theta,
                 "Vega":self.vega,
                 "Rho":self.rho}
+        
