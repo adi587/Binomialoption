@@ -5,30 +5,6 @@ from Binomialoption import Binomialoption
 from scipy.stats import norm
 
 class ImpliedVolatility:
-    '''
-    Stock option class has all the parameters defined for underlying asset
-    Attributes:
-        S_0=Current price of underlying
-        c=Strike price
-        r=Risk free rate (annually)
-        t_0=Time to expiration (yrs)
-        div=Dividends of underlying (annualised)
-        N=no.steps in binomial tree
-
-        is_call=Whether it is a call (True,False)
-        is_eu=Whether it is european or american option (True, False respectively)
-        binomial=Whether to value using binomial tree or BS equation (True,False)
-        
-        Usage eg: model=ImpliedVolatility(151.76, 0.04, 0.0465753,0.0061, 250,0.001,
-                        {"is_call":True},{"is_eu":True},{'binomial':True})
-
-        
-    Methods:
-        optionval=Calculates the option value using binomial tree
-        black=Calculates option value using BS equation
-        get_implied=Given list of strikes and option prices calculated implied volatility through binomial tree or BS
-
-    '''
     def __init__(self,S_0,r,t_0,div,N,res,call,eu,binomial):
         self.S_0=S_0 #stock price now
         self.r=r     #riskfree rate
